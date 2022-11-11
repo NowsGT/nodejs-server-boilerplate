@@ -1,0 +1,69 @@
+# This is a basic workflow to help you get started with Actions
+
+name: S3 Deploy Test
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '.version'
+      - 'VERSION'
+      - '.github/**'
+      - '.aws/**'
+      - '.scripts/**'
+      - 'package.json'
+      - 'dist/web-lib/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  check-merge:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: development
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/fermium'
+      - run: npm install
+
+  build:
+    runs-on: ubuntu-latest
+    environment: development
+    needs: [ check-merge ]
+    steps:
+      - uses: actions/checkout@v2
+      # Set APT_VERSION & Remove .env.staging
+      - run: |
+          cd ./dist
+          echo `pwd`
+            
+            
+  post-build:
+    runs-on: ubuntu-latest
+    environment: development
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+
+      ## deploy RNAPP
+      - name: Updating environment...
+        run: |
+          cd ./dist
+          echo `pwd`
+          echo `ls -lart`
