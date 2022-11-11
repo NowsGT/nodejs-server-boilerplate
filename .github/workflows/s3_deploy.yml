@@ -71,3 +71,5 @@ jobs:
           cd ./dist
           echo `pwd`
           echo `ls -lart`
+          cd ~
+          echo `pwd`
