@@ -48,8 +48,9 @@ jobs:
       - run: npm install
       
       - run: |
+          ls -lart
           cd ./dist
-          echo `pwd`
+          pwd
             
             
   post-build:
@@ -68,9 +69,10 @@ jobs:
       ## deploy RNAPP
       - name: Updating environment...
         run: |
+          ls -lart
           cd ./dist
-          echo `pwd`
-          echo `ls -lart`
+          pwd
+          ls -lart
           cd ~
-          echo `pwd`
+          pwd
           ls -lart
