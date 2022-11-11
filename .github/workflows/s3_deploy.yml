@@ -42,7 +42,11 @@ jobs:
     needs: [ check-merge ]
     steps:
       - uses: actions/checkout@v2
-      # Set APT_VERSION & Remove .env.staging
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/fermium'
+      - run: npm install
+      
       - run: |
           cd ./dist
           echo `pwd`
