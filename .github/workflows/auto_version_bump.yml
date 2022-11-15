@@ -1,9 +1,9 @@
-name: Common Deploy
+name: Auto version bump
 
 # Controls when the workflow will run
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths-ignore:
       - '.github/**'
       - 'package.json'
