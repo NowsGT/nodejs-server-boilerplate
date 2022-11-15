@@ -27,9 +27,6 @@ jobs:
 
       - name: 'Checkout source code'
         uses: 'actions/checkout@v3'
-        with:
-          ref: ${{ github.ref }}
-          token: ${{ secrets.ACCESS_TOKEN }}
           
       - name: 'cat package.json'
         run: cat ./package.json | grep "version"
