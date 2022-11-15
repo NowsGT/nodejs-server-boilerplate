@@ -1,4 +1,4 @@
-name: Auto version bump
+name: Auto Version Bump
 
 # Controls when the workflow will run
 on:
