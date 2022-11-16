@@ -14,9 +14,8 @@ jobs:
   # This workflow contains a single job called "build"
   pre-release:
     if: 'github.event.release.prerelease'
-    uses: ./.github/workflows/setup.yml
+    uses: ./.github/workflows/pre_release.yml
 
   non-prerelease:
     if: '!github.event.release.prerelease'
-    uses: ./.github/workflows/test.yml    
-
+    uses: ./.github/workflows/main_release.yml
