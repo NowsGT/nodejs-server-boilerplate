@@ -12,11 +12,11 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  non-prerelease:
-    if: '!github.event.release.prerelease'
+  pre-release:
+    if: 'github.event.release.prerelease'
     
     runs-on: ubuntu-latest
-    environment: main
+    environment: staging
     #container: node:16
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -32,11 +32,11 @@ jobs:
       - name: 'cat package.json'
         run: cat ./package.json | grep "version"
 
-  pre-release:
-    if: 'github.event.release.prerelease'
+  non-prerelease:
+    if: '!github.event.release.prerelease'
     
     runs-on: ubuntu-latest
-    environment: staging
+    environment: main
     #container: node:16
 
     # Steps represent a sequence of tasks that will be executed as part of the job
