@@ -31,6 +31,15 @@ jobs:
       
       - name: 'cat package.json'
         run: cat ./package.json | grep "version"
+        
+  build-prerelease:
+    runs-on: ubuntu-latest
+    environment: staging
+    needs: [ pre-release ]
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo "2nd job of pre-release task"
 
   non-prerelease:
     if: '!github.event.release.prerelease'
@@ -51,3 +60,12 @@ jobs:
       
       - name: 'cat package.json'
         run: cat ./package.json | grep "version"
+        
+  build-non-prerelease:
+    runs-on: ubuntu-latest
+    environment: staging
+    needs: [ non-prerelease ]
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo "2nd job of non-pre-release task"
