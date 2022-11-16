@@ -1,0 +1,53 @@
+name: Common Release Deploy
+
+# Controls when the workflow will run
+on:
+  release:
+    types: [ published ]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  pre-release:
+    if: 'github.event.release.prerelease'
+    
+    runs-on: ubuntu-latest
+    environment: staging
+    #container: node:16
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+      - name: 'Checkout source code'
+        uses: 'actions/checkout@v3'
+        with:
+          ref: ${{ github.ref }}
+          
+      - run: npm install
+      
+      - name: 'cat package.json'
+        run: cat ./package.json | grep "version"
+
+  non-prerelease:
+    if: '!github.event.release.prerelease'
+    
+    runs-on: ubuntu-latest
+    environment: main
+    #container: node:16
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+      - name: 'Checkout source code'
+        uses: 'actions/checkout@v3'
+        with:
+          ref: ${{ github.ref }}
+          
+      - run: npm install
+      
+      - name: 'cat package.json'
+        run: cat ./package.json | grep "version"
