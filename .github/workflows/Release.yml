@@ -33,7 +33,6 @@ jobs:
         run: cat ./package.json | grep "version"
 
   non-prerelease:
-    needs: [pre-release]
     if: '!github.event.release.prerelease'
     
     runs-on: ubuntu-latest
