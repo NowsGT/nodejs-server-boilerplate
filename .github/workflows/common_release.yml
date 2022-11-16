@@ -14,58 +14,9 @@ jobs:
   # This workflow contains a single job called "build"
   pre-release:
     if: 'github.event.release.prerelease'
-    
-    runs-on: ubuntu-latest
-    environment: staging
-    #container: node:16
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    
-      - name: 'Checkout source code'
-        uses: 'actions/checkout@v3'
-        with:
-          ref: ${{ github.ref }}
-          
-      - run: npm install
-      
-      - name: 'cat package.json'
-        run: cat ./package.json | grep "version"
-        
-  build-prerelease:
-    runs-on: ubuntu-latest
-    environment: staging
-    needs: [ pre-release ]
-    steps:
-      - uses: actions/checkout@v2
-      - run: |
-          echo "2nd job of pre-release task"
+    uses: ./.github/workflows/setup.yml
 
   non-prerelease:
     if: '!github.event.release.prerelease'
-    
-    runs-on: ubuntu-latest
-    environment: main
-    #container: node:16
+    uses: ./.github/workflows/test.yml    
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    
-      - name: 'Checkout source code'
-        uses: 'actions/checkout@v3'
-        with:
-          ref: ${{ github.ref }}
-          
-      - run: npm install
-      
-      - name: 'cat package.json'
-        run: cat ./package.json | grep "version"
-        
-  build-non-prerelease:
-    runs-on: ubuntu-latest
-    environment: staging
-    needs: [ non-prerelease ]
-    steps:
-      - uses: actions/checkout@v2
-      - run: |
-          echo "2nd job of non-pre-release task"
